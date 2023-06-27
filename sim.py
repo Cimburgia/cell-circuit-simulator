@@ -21,20 +21,20 @@ class Cell:
 class Sender(Cell):
     def __init__(self):
         super(Sender, self).__init__()
-        self.inputs = {'ipgt':False}
+        self.inputs = {'iptg':False}
         self.outputs = {'ahl':False}
 
     def logic(self, signals):
         for k,v in signals.items():
             if k in self.inputs:
                 self.inputs[k] = v
-        self.outputs['ahl'] = self.inputs['ipgt']
-        self.outputs['ipgt'] = self.inputs['ipgt']
+        self.outputs['ahl'] = self.inputs['iptg']
+        self.outputs['iptg'] = self.inputs['iptg']
 
 class Receiver(Cell):
     def __init__(self):
         super(Receiver, self).__init__()
-        self.inputs = {'ipgt':False,
+        self.inputs = {'iptg':False,
                        'ahl':False}
         self.outputs = {'gfp':False}
     
@@ -42,25 +42,25 @@ class Receiver(Cell):
         for k,v in signals.items():
             if k in self.inputs:
                 self.inputs[k] = v
-        self.outputs['gfp'] = self.inputs['ipgt'] & self.inputs['ahl']
+        self.outputs['gfp'] = self.inputs['iptg'] & self.inputs['ahl']
 
 class Circuit:
     def __init__(self, c):
-        self.ipgt = False
+        self.iptg = False
         self.start_cells = [c]
         self.output = False
 
-    def ipgt_signal(self, signal):
-        self.ipgt = signal
+    # should this pass to all cells? will be added to all media
+    def iptg_signal(self, signal):
+        self.iptg = signal
         for c in self.start_cells:
-            c.update({'ipgt':self.ipgt})
+            c.update({'iptg':self.iptg})
 
     def traverse_circuit(self, cell):
         if not cell.to_cells:
             return cell.outputs
         for to_cell in cell.to_cells:
-            if self.traverse_circuit(to_cell):
-                return True
+            return self.traverse_circuit(to_cell)
             
     def get_gfp(self):
         gfp = False
@@ -73,13 +73,16 @@ class Circuit:
         return gfp
 
 def main():
+    # Basic test, eventually replace 
     s = Sender()
     r = Receiver()
+    r1 = Receiver()
     s.connect(r)
+    s.connect(r1)
 
     c = Circuit(s)
     
-    c.ipgt_signal(True)
+    c.iptg_signal(True)
     
     for sig in s.outputs.keys():
         print(sig)
@@ -89,7 +92,13 @@ def main():
         print(sig)
         print(r.outputs[sig])
 
-    c.ipgt_signal(False)
+    for sig in r1.outputs.keys():
+        print(sig)
+        print(r1.outputs[sig])
+
+    print("output: {}".format(c.get_gfp()))
+
+    c.iptg_signal(False)
     
     for sig in s.outputs.keys():
         print(sig)
@@ -98,6 +107,9 @@ def main():
     for sig in r.outputs.keys():
         print(sig)
         print(r.outputs[sig])
+
+    print("output: {}".format(c.get_gfp()))
+    
 
 if __name__ == '__main__':
    main()
