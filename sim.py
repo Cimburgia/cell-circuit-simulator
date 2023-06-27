@@ -47,7 +47,7 @@ class Receiver(Cell):
 class Circuit:
     def __init__(self, c):
         self.iptg = False
-        self.start_cells = [c]
+        self.start_cells = c
         self.output = False
 
     # should this pass to all cells? will be added to all media
@@ -75,6 +75,8 @@ class Circuit:
 def main():
     # Update here
     # Basic test, eventually replace 
+    # A test with one sender and two receivers
+    '''
     s = Sender()
     r = Receiver()
     r1 = Receiver()
@@ -122,6 +124,328 @@ def main():
 
     print("output: {}".format(c.get_gfp()))
     
+    '''
+
+    '''
+    #A test with 2 senders and 3 recievers
+    s = Sender()
+    s1 = Sender()
+    r = Receiver()
+    r1 = Receiver()
+    r2 = Receiver()
+    s.connect(r)
+    s1.connect(r1)
+    s1.connect(r2)
+
+    c = Circuit([s, s1])
+    
+    c.iptg_signal(True)
+    
+    for sig in s.outputs.keys():
+        print(sig)
+        print(s.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s1.outputs.keys():
+        print(sig)
+        print(s1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r.outputs.keys():
+        print(sig)
+        print(r.outputs[sig])
+
+    
+    print("----------------------------------------------------")
+
+    for sig in r1.outputs.keys():
+        print(sig)
+        print(r1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r2.outputs.keys():
+        print(sig)
+        print(r2.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    #r.outputs['gfp'] = False
+    print("output: {}".format(c.get_gfp()))
+    print("----------------------------------------------------")
+
+    c.iptg_signal(False)
+    
+    for sig in s.outputs.keys():
+        print(sig)
+        print(s.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s1.outputs.keys():
+        print(sig)
+        print(s1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r.outputs.keys():
+        print(sig)
+        print(r.outputs[sig])
+
+    
+    print("----------------------------------------------------")
+
+    for sig in r1.outputs.keys():
+        print(sig)
+        print(r1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r2.outputs.keys():
+        print(sig)
+        print(r2.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    print("output: {}".format(c.get_gfp()))
+    '''
+
+
+    #A test with 5 senders and 9 recievers
+    s = Sender()
+    s1 = Sender()
+    s2 = Sender()
+    s3 = Sender()
+    s4 = Sender()
+    r = Receiver()
+    r1 = Receiver()
+    r2 = Receiver()
+    r3 = Receiver()
+    r4 = Receiver()
+    r5 = Receiver()
+    r6 = Receiver()
+    r7 = Receiver()
+    r8 = Receiver()
+    s.connect(r)
+    s.connect(r1)
+    s.connect(r2)
+    s.connect(r3)
+    s.connect(r4)
+    s.connect(r5)
+    s.connect(r6)
+    s.connect(r7)
+    s.connect(r8)
+
+    s1.connect(r)
+    s1.connect(r1)
+    s1.connect(r2)
+    s1.connect(r3)
+    s1.connect(r4)
+    s1.connect(r5)
+    s1.connect(r6)
+    s1.connect(r7)
+    s1.connect(r8)
+
+    s2.connect(r6)
+    s2.connect(r7)
+    s2.connect(r8)
+
+    s3.connect(r2)
+    s3.connect(r3)
+
+    s4.connect(r1)
+    s4.connect(r2)
+    s4.connect(r6)
+    s4.connect(r7)
+    s4.connect(r8)
+
+
+    c = Circuit([s, s1, s2, s3, s4])
+    
+    c.iptg_signal(True)
+    
+    for sig in s.outputs.keys():
+        print(sig)
+        print(s.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s1.outputs.keys():
+        print(sig)
+        print(s1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s2.outputs.keys():
+        print(sig)
+        print(s2.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s3.outputs.keys():
+        print(sig)
+        print(s3.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s4.outputs.keys():
+        print(sig)
+        print(s4.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r.outputs.keys():
+        print(sig)
+        print(r.outputs[sig])
+
+    
+    print("----------------------------------------------------")
+
+    for sig in r1.outputs.keys():
+        print(sig)
+        print(r1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r2.outputs.keys():
+        print(sig)
+        print(r2.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r3.outputs.keys():
+        print(sig)
+        print(r3.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r4.outputs.keys():
+        print(sig)
+        print(r4.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r5.outputs.keys():
+        print(sig)
+        print(r5.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r6.outputs.keys():
+        print(sig)
+        print(r6.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r7.outputs.keys():
+        print(sig)
+        print(r7.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r8.outputs.keys():
+        print(sig)
+        print(r8.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    #r.outputs['gfp'] = False
+    print("output: {}".format(c.get_gfp()))
+    print("----------------------------------------------------")
+
+    c.iptg_signal(False)
+
+    for sig in s.outputs.keys():
+        print(sig)
+        print(s.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s1.outputs.keys():
+        print(sig)
+        print(s1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s2.outputs.keys():
+        print(sig)
+        print(s2.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s3.outputs.keys():
+        print(sig)
+        print(s3.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in s4.outputs.keys():
+        print(sig)
+        print(s4.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r.outputs.keys():
+        print(sig)
+        print(r.outputs[sig])
+
+    
+    print("----------------------------------------------------")
+
+    for sig in r1.outputs.keys():
+        print(sig)
+        print(r1.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r2.outputs.keys():
+        print(sig)
+        print(r2.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r3.outputs.keys():
+        print(sig)
+        print(r3.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r4.outputs.keys():
+        print(sig)
+        print(r4.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r5.outputs.keys():
+        print(sig)
+        print(r5.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r6.outputs.keys():
+        print(sig)
+        print(r6.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r7.outputs.keys():
+        print(sig)
+        print(r7.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    for sig in r8.outputs.keys():
+        print(sig)
+        print(r8.outputs[sig])
+
+    print("----------------------------------------------------")
+
+    #r.outputs['gfp'] = False
+    print("output: {}".format(c.get_gfp()))
+    print("----------------------------------------------------")
+
 
 if __name__ == '__main__':
    main()
