@@ -89,25 +89,36 @@ def main():
         print(sig)
         print(s.outputs[sig])
 
+    print("----------------------------------------------------")
+
     for sig in r.outputs.keys():
         print(sig)
         print(r.outputs[sig])
+
+    
+    print("----------------------------------------------------")
 
     for sig in r1.outputs.keys():
         print(sig)
         print(r1.outputs[sig])
 
+    print("----------------------------------------------------")
+
+    #r.outputs['gfp'] = False
     print("output: {}".format(c.get_gfp()))
+    print("----------------------------------------------------")
 
     c.iptg_signal(False)
     
     for sig in s.outputs.keys():
         print(sig)
         print(s.outputs[sig])
+    print("----------------------------------------------------")
 
     for sig in r.outputs.keys():
         print(sig)
         print(r.outputs[sig])
+    print("----------------------------------------------------")
 
     print("output: {}".format(c.get_gfp()))
     
