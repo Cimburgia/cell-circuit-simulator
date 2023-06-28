@@ -74,6 +74,7 @@ class Circuit:
 
 def main():
     # Update here
+    # Test
     # Basic test, eventually replace 
     s = Sender()
     r = Receiver()
@@ -97,6 +98,7 @@ def main():
         print(sig)
         print(r1.outputs[sig])
 
+    r.outputs['gfp'] = False
     print("output: {}".format(c.get_gfp()))
 
     c.iptg_signal(False)
@@ -109,6 +111,7 @@ def main():
         print(sig)
         print(r.outputs[sig])
 
+    
     print("output: {}".format(c.get_gfp()))
     
 
