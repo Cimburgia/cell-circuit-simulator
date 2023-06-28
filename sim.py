@@ -73,7 +73,7 @@ class Circuit:
         return gfp
 
 def main():
-    # Update here!
+    # Update here!!
     # Basic test, eventually replace 
     # A test with one sender and two receivers
     '''
