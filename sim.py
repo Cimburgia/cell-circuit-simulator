@@ -8,8 +8,8 @@ class Cell:
         self.from_cells = []
         self.to_cells = []
     
-    def update(self, signals):
-        self.logic(signals)
+    def update(self, signals_in):
+        self.logic(signals_in)
         for tc in self.to_cells:
             tc.update(self.outputs)
 
@@ -19,30 +19,45 @@ class Cell:
         cell.update(self.outputs)
     
 class Sender(Cell):
-    def __init__(self):
-        super(Sender, self).__init__()
-        self.inputs = {'iptg':False}
-        self.outputs = {'ahl':False}
+    def __init__(self, signal_in, signal_out):
+        super().__init__()
+        self.inputs = {signal_in:False}
+        self.outputs = {signal_out:False}
+        self.signal_in = signal_in
+        self.signal_out = signal_out
 
-    def logic(self, signals):
-        for k,v in signals.items():
-            if k in self.inputs:
-                self.inputs[k] = v
-        self.outputs['ahl'] = self.inputs['iptg']
-        self.outputs['iptg'] = self.inputs['iptg']
+    def logic(self, recv_signals):
+        # Add all inputs
+        for rs in recv_signals:
+            self.inputs[rs] = True
+        # Update output
+        self.outputs[self.signal_out] = self.inputs[self.signal_in]
+        
 
 class Receiver(Cell):
-    def __init__(self):
-        super(Receiver, self).__init__()
-        self.inputs = {'iptg':False,
-                       'ahl':False}
-        self.outputs = {'gfp':False}
+    def __init__(self, signals_in, signal_out):
+        super().__init__()
+        self.inputs = {signal_in: False for signal_in in signals_in}
+        self.outputs = {signal_out: False}
+        self.signal_in = signals_in
+        self.signal_out = signal_out
     
-    def logic(self, signals):
-        for k,v in signals.items():
-            if k in self.inputs:
-                self.inputs[k] = v
-        self.outputs['gfp'] = self.inputs['iptg'] & self.inputs['ahl']
+    def logic(self, recv_signals):
+        for rs in recv_signals:
+            self.inputs[rs] = True
+        # Set output
+        self.outputs[self.signal_out] = all(self.inputs[signal] for signal in self.signal_in)
+            
+
+class Wire(Cell):
+    def __init__(self):
+        super().__init__()
+        self.inputs = {}
+        self.outputs = {}
+
+    def logic(self, signal):
+        pass
+
 
 class Circuit:
     def __init__(self, c):
@@ -56,6 +71,7 @@ class Circuit:
         for c in self.start_cells:
             c.update({'iptg':self.iptg})
 
+    # does not work with multiple terminal cells. Fix
     def traverse_circuit(self, cell):
         if not cell.to_cells:
             return cell.outputs
@@ -73,43 +89,7 @@ class Circuit:
         return gfp
 
 def main():
-    # Update here
-    # Basic test, eventually replace 
-    s = Sender()
-    r = Receiver()
-    r1 = Receiver()
-    s.connect(r)
-    s.connect(r1)
-
-    c = Circuit(s)
-    
-    c.iptg_signal(True)
-    
-    for sig in s.outputs.keys():
-        print(sig)
-        print(s.outputs[sig])
-
-    for sig in r.outputs.keys():
-        print(sig)
-        print(r.outputs[sig])
-
-    for sig in r1.outputs.keys():
-        print(sig)
-        print(r1.outputs[sig])
-
-    print("output: {}".format(c.get_gfp()))
-
-    c.iptg_signal(False)
-    
-    for sig in s.outputs.keys():
-        print(sig)
-        print(s.outputs[sig])
-
-    for sig in r.outputs.keys():
-        print(sig)
-        print(r.outputs[sig])
-
-    print("output: {}".format(c.get_gfp()))
+    # Run tests
 
 if __name__ == '__main__':
    main()
