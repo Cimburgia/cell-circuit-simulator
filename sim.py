@@ -45,7 +45,7 @@ class Receiver(Cell):
         self.outputs['gfp'] = self.inputs['iptg'] & self.inputs['ahl']
 
 class Circuit:
-    def __init__(self, c):
+    def __init__(self, c: list[Sender]):
         self.iptg = False
         self.start_cells = c
         self.output = False
@@ -75,28 +75,44 @@ class Circuit:
 def main():
     # Update here!!
     # Basic test, eventually replace 
+
+    
     s = Sender()
     r = Receiver()
     r1 = Receiver()
     s.connect(r)
     s.connect(r1)
 
-    c = Circuit(s)
+    c = Circuit([s])
     
     c.iptg_signal(True)
     
     for sig in s.outputs.keys():
         print(sig)
         print(s.outputs[sig])
+    
+    print("---------")
 
     for sig in r.outputs.keys():
         print(sig)
         print(r.outputs[sig])
 
+    print("---------")
+
     for sig in r1.outputs.keys():
         print(sig)
         print(r1.outputs[sig])
 
+    print("---------")
+
+
+    r.outputs['gfp'] = False
+
+    for sig in r.outputs.keys():
+        print(sig)
+        print(r.outputs[sig])
+    
+    print("---------")
     print("output: {}".format(c.get_gfp()))
 
     c.iptg_signal(False)
@@ -110,6 +126,9 @@ def main():
         print(r.outputs[sig])
 
     print("output: {}".format(c.get_gfp()))
+
+
+
 
 if __name__ == '__main__':
    main()
