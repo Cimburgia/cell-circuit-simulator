@@ -47,7 +47,6 @@ class Receiver(Cell):
             self.inputs[rs] = True
         # Set output
         self.outputs[self.signal_out] = all(self.inputs[signal] for signal in self.signal_in)
-            
 
 class Wire(Cell):
     def __init__(self, signal_in):
@@ -61,39 +60,49 @@ class Wire(Cell):
         for rs in recv_signals:
             self.inputs[rs] = True
         self.outputs[self.signal_out] = self.inputs[self.signal_in]
-    
 
+# Class where cells are represented as a graph
 class Circuit:
-    def __init__(self, c):
-        self.iptg = False
-        self.start_cells = c
-        self.output = False
+    def __init__(self):
+        self.signals = []
+        self.cells = []
 
-    # should this pass to all cells? will be added to all media
-    def iptg_signal(self, signal):
-        self.iptg = signal
-        for c in self.start_cells:
-            c.update({'iptg':self.iptg})
+    # Add iptg
+    def add_iptg(self, node = None, visited = None):
+        if visited is None:
+            visited = set()
+        if node is None:
+            for c in self.cells:
+                self.add_iptg(c, visited)
+        else:
+            visited.add(node)
+            node.inputs['iptg'] = True
+            for tc in node.to_cells:
+                if tc not in visited:
+                    self.add_iptg(tc, visited)
 
-    # does not work with multiple terminal cells. Fix
-    def traverse_circuit(self, cell):
+    # Read output of circuit
+    def read_output(self, cell):
         if not cell.to_cells:
-            return cell.outputs
-        for to_cell in cell.to_cells:
-            return self.traverse_circuit(to_cell)
-            
-    def get_gfp(self):
-        gfp = False
-        outputs = {}
-        for sc in self.start_cells:
-            outputs = self.traverse_circuit(sc)
-            if 'gfp' in outputs:
-                gfp = outputs['gfp'] or gfp
-
-        return gfp
+            return cell.outputs[cell.signal_out]
+        
+        for tc in cell.to_cells:
+            if self.read_output(tc):
+                return True
+        
+        return False
+        
+    # Run circuit
+    def simulate(signal, self):
+        out = False
+        for c in self.cells:
+            c.update(signal)
+            out = out | self.read_output(c)
+        return out
 
 def main():
     # Run tests
+    pass
 
 if __name__ == '__main__':
    main()
