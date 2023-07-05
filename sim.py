@@ -63,9 +63,9 @@ class Wire(Cell):
 
 # Class where cells are represented as a graph
 class Circuit:
-    def __init__(self):
+    def __init__(self, start_cells):
         self.signals = []
-        self.cells = []
+        self.cells = [start_cells]
 
     # Add iptg
     def add_iptg(self, node = None, visited = None):
@@ -93,7 +93,7 @@ class Circuit:
         return False
         
     # Run circuit
-    def simulate(signal, self):
+    def simulate(self, signal):
         out = False
         for c in self.cells:
             c.update(signal)
@@ -102,7 +102,22 @@ class Circuit:
 
 def main():
     # Run tests
-    pass
+    s = Sender('iptg', 'ahl')
+    w = Wire('ahl')
+    r = Receiver(['ahl', 'iptg'], 'gfp')
+
+    c = Circuit(s)
+
+    s.connect(w)
+    w.connect(r)
+
+    c.add_iptg()
+
+    print(s.inputs['iptg'])
+    print(r.inputs['iptg'])
+    print(r.outputs['gfp'])
+    print(c.simulate('iptg'))
+    print(r.outputs['gfp'])
 
 if __name__ == '__main__':
    main()
