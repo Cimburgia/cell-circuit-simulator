@@ -178,6 +178,12 @@ def test_wire():
     c.simulate('iptg')
     assert w.inputs['ahl'] and w.outputs['ahl'] == True
     
+'''
+s.inputs['iptg'] returns True, but s1.inputs['iptg'] and s1.inputs['iptg'] return False
+s is connected to w, w1, and w2, so w.inputs['iptg'], w1.inputs['iptg'], and w2.inputs['iptg'] all return True
+s1 is connected to w3, w4, and w5, so w3.inputs['iptg'], w4.inputs['iptg'], and w5.inputs['iptg'] cause an error when code is ran.
+
+'''
 def test_add_iptg():
     s = sim.Sender('iptg', 'ahl')
     s1 = sim.Sender('iptg', 'ahl')
@@ -196,7 +202,7 @@ def test_add_iptg():
     r2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
 
 
-    c = sim.Circuit(s)
+    c = sim.Circuit([s, s1, s2])
 
     s.connect(w)
     w.connect(r)
@@ -223,12 +229,60 @@ def test_add_iptg():
     c.add_iptg()
 
     assert s.inputs['iptg'] and s1.inputs['iptg'] and s2.inputs['iptg'] and w.inputs['iptg'] and w1.inputs['iptg'] and w2.inputs['iptg']  and w3.inputs['iptg'] and w4.inputs['iptg'] and w5.inputs['iptg'] and w6.inputs['iptg'] and w7.inputs['iptg'] and w8.inputs['iptg'] and r.inputs['iptg'] and r1.inputs['iptg'] and r2.inputs['iptg'] == True
+
+
+#Test simple circuit with one sender, and one wire that connects to 3 recievers
+def test_circuit_one_wire_to_many_recievers():
+
+    s = sim.Sender('iptg', 'ahl')
+    w = sim.Wire('ahl')
+    r = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    r1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    r2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+
+    c = sim.Circuit(s)
+
+    s.connect(w)
+    w.connect(r)
+    w.connect(r1)
+    w.connect(r2)
+
+    c.add_iptg()
+
+    assert r.outputs['gfp'] == False and r1.outputs['gfp'] == False and r2.outputs['gfp'] == False
+    c.simulate('iptg')
+    assert r.outputs['gfp'] and r1.outputs['gfp'] and r2.outputs['gfp'] == True
+
+#Test simple circuit with one sender, and one wire that connects to 3 recievers
+def test_circuit_many_senders_to_one_wire():
+
+    s = sim.Sender('iptg', 'ahl')
+    s1 = sim.Sender('iptg', 'ahl')
+    s2= sim.Sender('iptg', 'ahl')
+    w = sim.Wire('ahl')
+    r = sim.Receiver(['ahl', 'iptg'], 'gfp')
     
+
+    c = sim.Circuit(s)
+
+    s.connect(w)
+    s1.connect(w)
+    s2.connect(w)
+    w.connect(r)
+    
+    
+
+    c.add_iptg()
+
+    assert r.outputs['gfp'] == False
+    c.simulate('iptg')
+    assert r.outputs['gfp'] == True
+
+
 '''
 1.Test to make sure that all cells have IPTG after c.addIptg() and don't have IPTG before it
 
-
--What does readOutput function do?
--Is there get_gfp() function? If yes, create tests for it like before
--Where there is no c.add_iptg(), w.inputs['iptg'] gives error
+-Do we need to create get_gfp() function? If yes, create tests for it like before
+-Where there is no c.add_iptg(), w.inputs['iptg'] gives error, but s.inputs['iptg'] and r.inputs['iptg'] return false
+-
 '''
