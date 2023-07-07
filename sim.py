@@ -64,8 +64,10 @@ class Wire(Cell):
 # Class where cells are represented as a graph
 class Circuit:
     def __init__(self, start_cells):
+        if not isinstance(start_cells, list):
+            start_cells = [start_cells]
         self.signals = []
-        self.cells = [start_cells]
+        self.cells = start_cells
 
     # Add iptg
     def add_iptg(self, node = None, visited = None):
@@ -104,20 +106,47 @@ def main():
     # Run tests
     s = Sender('iptg', 'ahl')
     w = Wire('ahl')
+    w1 = Wire('ahl')
     r = Receiver(['ahl', 'iptg'], 'gfp')
+    r1 = Receiver(['ahl', 'iptg'], 'gfp')
 
-    c = Circuit(s)
+    c = Circuit([s])
+
+    print(c.read_output(s))
+    print(c.read_output(w))
+    print(c.read_output(w1))
+    print(c.read_output(r))
+    print(c.read_output(r1))
+    print("--------------------------")
 
     s.connect(w)
     w.connect(r)
+    s.connect(w1)
+    w.connect(r1)
+
+    print(c.read_output(s))
+    print(c.read_output(w))
+    print(c.read_output(w1))
+    print(c.read_output(r))
+    print(c.read_output(r1))
+    print("--------------------------")
+
 
     c.add_iptg()
 
-    print(s.inputs['iptg'])
-    print(r.inputs['iptg'])
-    print(r.outputs['gfp'])
-    print(c.simulate('iptg'))
-    print(r.outputs['gfp'])
+    print(c.read_output(s))
+    print(c.read_output(w))
+    print(c.read_output(w1))
+    print(c.read_output(r))
+    print(c.read_output(r1))
+    print("--------------------------")
+    c.simulate('iptg')
+    print(c.read_output(s))
+    print(c.read_output(w))
+    print(c.read_output(w1))
+    print(c.read_output(r))
+    print(c.read_output(r1))
+
 
 if __name__ == '__main__':
    main()
