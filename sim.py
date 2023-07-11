@@ -104,6 +104,7 @@ class Circuit:
 
 def main():
     # Run tests
+    
     s = Sender('iptg', 'ahl')
     w = Wire('ahl')
     w1 = Wire('ahl')
@@ -146,7 +147,8 @@ def main():
     print(c.read_output(w1))
     print(c.read_output(r))
     print(c.read_output(r1))
-
+    
+  
 
 if __name__ == '__main__':
    main()
