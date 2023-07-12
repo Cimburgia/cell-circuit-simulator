@@ -458,3 +458,67 @@ def test_circuit_with_no_input():
     # The circuit with no input
     assert circuit.simulate([]) == False
 
+#Edge Case Test
+def test_circuit_with_wrong_input():
+    sender = sim.Sender('iptg', 'ahl')
+    circuit = sim.Circuit([sender])
+    # The circuit with no input
+    assert circuit.simulate(['gfp']) == False
+
+#Edge Case Test
+def test_cell_connection_SS():
+    send_cell1 = sim.Sender('iptg', 'ahl')
+    send_cell2 = sim.Sender('iptg', 'ahl')
+    send_cell1.connect(send_cell2)
+    assert send_cell2 in send_cell1.to_cells and send_cell1 in send_cell2.from_cells
+
+#Edge Case Test
+def test_cell_connection_WW():
+    wire1 = sim.Wire('iptg')
+    wire2 = sim.Wire('iptg')
+    wire1.connect(wire2)
+    assert wire2 in wire1.to_cells and wire1 in wire2.from_cells
+
+#Edge Case Test
+def test_cell_connection_RR():
+    receiver_cell1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    receiver_cell2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    receiver_cell1.connect(receiver_cell2)
+    assert receiver_cell2 in receiver_cell1.to_cells and receiver_cell1 in receiver_cell2.from_cells
+
+#Edge Case Test
+def test_wire_edge1():
+    wire = sim.Wire('iptg')
+    wire.update(['ahl'])
+    assert wire.inputs['iptg'] == False and wire.outputs['iptg'] == False
+
+#Edge Case Test
+def test_wire_edge2():
+    wire = sim.Wire('ahl')
+    wire.logic(['iptg'])
+    assert wire.inputs['ahl'] == False and wire.inputs['ahl'] == False
+
+#Edge Case Test
+def test_sender_edge1():
+    sender = sim.Sender('iptg', 'ahl')
+    sender.update(['ahl'])
+    assert sender.inputs['iptg'] == False and sender.outputs['ahl'] == False
+
+#Edge Case Test
+def test_sender_edge2():
+    sender = sim.Sender('iptg', 'ahl')
+    sender.logic(['ahl'])
+    assert sender.inputs['iptg'] == False and sender.outputs['ahl'] == False
+
+#Edge Case Test
+def test_receiver_edge1():
+    receiver = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    receiver.update(['gfp'])
+    assert receiver.inputs['ahl'] == False and receiver.inputs['iptg'] == False and receiver.outputs['gfp'] == False
+
+#Edge Case Test
+def test_receiver_edge2():
+    receiver = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    receiver.logic(['gfp'])
+    assert receiver.inputs['ahl'] == False and receiver.inputs['iptg'] == False and receiver.outputs['gfp'] == False
+
