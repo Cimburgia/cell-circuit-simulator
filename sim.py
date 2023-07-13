@@ -16,7 +16,6 @@ class Cell:
     def connect(self, cell):
         self.to_cells.append(cell)
         cell.from_cells.append(self)
-        cell.update(self.outputs)
     
 class Sender(Cell):
     def __init__(self, signal_in, signal_out):
@@ -107,29 +106,29 @@ def main():
     
     s = Sender('iptg', 'ahl')
     w = Wire('ahl')
-    w1 = Wire('ahl')
-    r = Receiver(['ahl', 'iptg'], 'gfp')
-    r1 = Receiver(['ahl', 'iptg'], 'gfp')
+   # w1 = Wire('ahl')
+    #r = Receiver(['ahl', 'iptg'], 'gfp')
+    #r1 = Receiver(['ahl', 'iptg'], 'gfp')
 
     c = Circuit([s])
 
     print(c.read_output(s))
     print(c.read_output(w))
-    print(c.read_output(w1))
-    print(c.read_output(r))
-    print(c.read_output(r1))
+   # print(c.read_output(w1))
+   # print(c.read_output(r))
+   # print(c.read_output(r1))
     print("--------------------------")
 
     s.connect(w)
-    w.connect(r)
-    s.connect(w1)
-    w.connect(r1)
+    #w.connect(r)
+    #s.connect(w1)
+    #w.connect(r1)
 
     print(c.read_output(s))
     print(c.read_output(w))
-    print(c.read_output(w1))
-    print(c.read_output(r))
-    print(c.read_output(r1))
+    #print(c.read_output(w1))
+    #print(c.read_output(r))
+    #print(c.read_output(r1))
     print("--------------------------")
 
 
@@ -137,18 +136,17 @@ def main():
 
     print(c.read_output(s))
     print(c.read_output(w))
-    print(c.read_output(w1))
-    print(c.read_output(r))
-    print(c.read_output(r1))
+    #print(c.read_output(w1))
+    #print(c.read_output(r))
+    #print(c.read_output(r1))
     print("--------------------------")
     c.simulate('iptg')
     print(c.read_output(s))
     print(c.read_output(w))
-    print(c.read_output(w1))
-    print(c.read_output(r))
-    print(c.read_output(r1))
-    
-  
+    #print(c.read_output(w1))
+    #print(c.read_output(r))
+    #print(c.read_output(r1))
+
 
 if __name__ == '__main__':
    main()
