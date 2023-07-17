@@ -8,31 +8,61 @@ import pytest
     - Wire to be created when Cell.connect is called
     - Circuit.get_wires(built_circuit) -> list of wires
 '''
-def test_get_outputs():
-    # instantiate a sender with 'iptg', 'ahl'
-    # instantiate a receiver 'iptg', 'ahl', 'gfp'
-    # instantiate a circuit
-    # connect r and c
-    # call o = circuit.get_outputs()
+def test_get_outputs1():
+    sender = sim.Sender('iptg', 'ahl')
+    circuit = sim.Circuit(sender)
+    circuit.build_circuit()
+    o = circuit.get_outputs()
+    assert o == ['ahl']
+
+def test_get_outputs2():
+    sender = sim.Sender('iptg', 'ahl')
+    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.Circuit(sender)
+    sender.connect(receiver_cell)
+    circuit.build_circuit()
+    o = circuit.get_outputs()
     assert o == ['ahl', 'gfp']
 
-def test_connect_cells():
-    # s = sender
-    # r = receiver
-    # s.connect(r)
-    # c = circuit(s)
 
-    assert c.get_wires() == [Wire]
+def test_connect_cells1():
+    sender = sim.Sender('iptg', 'ahl')
+    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.Circuit(sender)
+    sender.connect(receiver_cell)
+    circuit.build_circuit()
+    assert circuit.get_wires() == [Wire]
 
+def test_connect_cells2():
+    sender = sim.Sender('iptg', 'ahl')
+    receiver_cell1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    receiver_cell2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.Circuit(sender)
+    sender.connect(receiver_cell1)
+    sender.connect(receiver_cell2)
+    circuit.build_circuit()
+    assert circuit.get_wires() == [Wire, Wire]
+
+# sender->wire->reciever
 def test_build_circuit():
-    # instantiate cells
-    # define cell connections
-    # Add cells to circuit
-    # taverse connections
-    # return adjacency list or matrix
-    # ex.
-    # A->B->C 
-    # List: [[B],[C],[]]
-    # Matrix: [[1, 1, 0],
-    #          [0, 1, 1],
-    #          [0, 0, 1]]
+    sender = sim.Sender('iptg', 'ahl')
+    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.Circuit(sender)
+    sender.connect(receiver_cell) 
+    # traverse connections
+    assert circuit.build_circuit() == [[1, 1, 0],
+                                       [0, 1, 1],
+                                       [0, 0, 1]] or circuit.build_circuit() == [[wire],[receiver_cell],[]]
+    
+# sender connects to wire1 and wire 2. Both wire1 and wire2 connect to receiver.
+def test_build_circuit2():
+    sender = sim.Sender('iptg', 'ahl')
+    receiver_cell1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    receiver_cell2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.Circuit(sender)
+    sender.connect(receiver_cell1)
+    sender.connect(receiver_cell2)
+    circuit.build_circuit() 
+    # traverse connections
+    circuit.build_circuit() == [[wire1, wire2],[receiver_cell1],[], [receiver_cell2], []]
+    
