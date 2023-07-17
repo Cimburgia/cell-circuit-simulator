@@ -50,6 +50,7 @@ class Receiver(Cell):
         self.signal_in = signals_in
         self.signal_out = signal_out
     
+    #Sets inputs and outputs true
     def logic(self, recv_signals):
         for rs in recv_signals:
             self.inputs[rs] = True
@@ -64,6 +65,7 @@ class Wire(Cell):
         self.signal_in = signal_in
         self.signal_out = signal_in
 
+    #Sets inputs and outputs true
     def logic(self, recv_signals):
         for rs in recv_signals:
             self.inputs[rs] = True
@@ -77,7 +79,7 @@ class Circuit:
         self.signals = []
         self.cells = start_cells
 
-    # Add iptg
+    # Adds iptg to all cells
     def add_iptg(self, node = None, visited = None):
         if visited is None:
             visited = set()
@@ -91,7 +93,7 @@ class Circuit:
                 if tc not in visited:
                     self.add_iptg(tc, visited)
 
-    # Read output of circuit
+    # Read output of cell
     def read_output(self, cell):
         if not cell.to_cells:
             return cell.outputs[cell.signal_out]
