@@ -50,7 +50,7 @@ class Receiver(Cell):
         self.signal_in = signals_in
         self.signal_out = signal_out
     
-    #Sets inputs and outputs true
+    #Sets outputs to True when both inputs IPTG and AHL are True
     def logic(self, recv_signals):
         for rs in recv_signals:
             self.inputs[rs] = True
@@ -65,7 +65,7 @@ class Wire(Cell):
         self.signal_in = signal_in
         self.signal_out = signal_in
 
-    #Sets inputs and outputs true
+    #Forwards AHL signal
     def logic(self, recv_signals):
         for rs in recv_signals:
             self.inputs[rs] = True
