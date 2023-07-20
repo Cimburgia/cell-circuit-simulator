@@ -11,7 +11,7 @@ import pytest
 '''
 def test_get_outputs1():
     sender = sim.Sender('iptg', 'ahl')
-    circuit = sim.Circuit(sender)
+    circuit = sim.circuit(sender)
     circuit.build_circuit()
     o = circuit.get_outputs()
     assert o == ['ahl']
@@ -19,8 +19,8 @@ def test_get_outputs1():
 
 def test_get_outputs2():
     sender = sim.Sender('iptg', 'ahl')
-    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    receiver_cell = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit(sender)
     sender.connect(receiver_cell)
     circuit.build_circuit()
     o = circuit.get_outputs()
@@ -28,8 +28,8 @@ def test_get_outputs2():
 
 def test_get_outputs3():
     sender = sim.Sender('iptg', 'ahl')
-    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    receiver_cell = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit(sender)
     sender.connect(receiver_cell)
     o = circuit.get_outputs()
     assert o == ['ahl']
@@ -37,17 +37,17 @@ def test_get_outputs3():
 
 def test_connect_cells1():
     sender = sim.Sender('iptg', 'ahl')
-    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    receiver_cell = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit(sender)
     sender.connect(receiver_cell)
     circuit.build_circuit()
     assert circuit.get_wires() == [Wire]
 
 def test_connect_cells2():
     sender = sim.Sender('iptg', 'ahl')
-    receiver_cell1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    receiver_cell2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    receiver_cell1 = sim.receiver(['ahl', 'iptg'], 'gfp')
+    receiver_cell2 = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit(sender)
     sender.connect(receiver_cell1)
     sender.connect(receiver_cell2)
     circuit.build_circuit()
@@ -56,8 +56,8 @@ def test_connect_cells2():
 # sender->wire->reciever
 def test_build_circuit():
     sender = sim.Sender('iptg', 'ahl')
-    receiver_cell = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    receiver_cell = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit(sender)
     sender.connect(receiver_cell) 
     # traverse connections
     assert circuit.build_circuit() == [[1, 1],
@@ -66,9 +66,9 @@ def test_build_circuit():
 # sender connects to wire1 and wire 2. Both wire1 and wire2 connect to receiver.
 def test_build_circuit2():
     sender = sim.Sender('iptg', 'ahl')
-    receiver_cell1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    receiver_cell2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    receiver_cell1 = sim.receiver(['ahl', 'iptg'], 'gfp')
+    receiver_cell2 = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit(sender)
     sender.connect(receiver_cell1)
     sender.connect(receiver_cell2)
     circuit.build_circuit() 
@@ -81,10 +81,10 @@ def test_build_circuit3():
     s = sim.Sender('iptg', 'ahl')
     s1 = sim.Sender('iptg', 'ahl')
     s2 = sim.Sender('iptg', 'ahl')
-    r = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    r1 = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    r2 = sim.Receiver(['ahl', 'iptg'], 'gfp')
-    circuit = sim.Circuit(sender)
+    r = sim.receiver(['ahl', 'iptg'], 'gfp')
+    r1 = sim.receiver(['ahl', 'iptg'], 'gfp')
+    r2 = sim.receiver(['ahl', 'iptg'], 'gfp')
+    circuit = sim.circuit([s, s1, s2])
     s.connect(r)
     s.connect(r1)
     s.connect(r2)
