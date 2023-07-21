@@ -1,3 +1,19 @@
+'''
+A cell will be a gate that can perform a given funciton. These are nodes or verticies in 
+our graph representation of a circuit
+
+Cells will be defined by their type:
+    - INPUT (sender)
+    - OUTPUT (receiver)
+    - NOR
+Cells will have a group of neighbors:
+    - From Wire(s)
+    - To Wires(s)
+    - From Cell(s)
+    - To Cells(s)
+
+'''
+
 class Cell:
     def __init__(self):
         self.inputs = {}

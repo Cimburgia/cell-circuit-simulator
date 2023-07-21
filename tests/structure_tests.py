@@ -8,6 +8,7 @@ import pytest
     - Circuit.build_circuit()
     - Wire to be created when Cell.connect is called
     - Circuit.get_wires(built_circuit) -> list of wires
+
 '''
 def test_get_outputs1():
     sender = sim.Sender('iptg', 'ahl')

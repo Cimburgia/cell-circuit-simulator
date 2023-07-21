@@ -11,9 +11,27 @@
 	- Always test and try to understand impact of unknowns
 
     Current model parameters:
-    - Diffusion of signal
+    - Diffusion of signal through hydrogel
+		- Varied
     - Production of signal
-    - Growth rate of ecoli
-    - 
+		- Varied
+    - Concentration of cells per volumne of hydrogel
+		- Fixed at print time
+    
 """
 
+
+def signal_diffusion_rate(signal, [hydrogel_properties]):
+	'''Takes a given signaling molecule and returns the rate at which it will
+	move (diffuse) through the hydrogel
+
+	Inputs:
+		- Signaling molecule
+		- Properties of hydrogel (might be defined by user dynamically)
+	'''
+    pass
+
+def signal_production(cell, signal, [parameters]):
+	"""given a specific cell and its properties, model the rate at which the
+	colony will produce a given signal. This will depend on a number of other parameters"""
+	pass
