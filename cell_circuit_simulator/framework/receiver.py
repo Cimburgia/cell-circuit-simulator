@@ -1,4 +1,4 @@
-from cell import Cell
+from framework.cell import Cell
 
 class Receiver(Cell):
     def __init__(self, signals_in, signal_out):

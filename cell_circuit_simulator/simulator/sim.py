@@ -1,11 +1,9 @@
-#!/usr/bin/env python
-import sys
 import numpy as np
-from cell import Cell
-from sender import Sender
-from receiver import Receiver
-from wire import Wire
-from circuit import Circuit
+from framework.cell import Cell
+from framework.sender import Sender
+from framework.receiver import Receiver
+from framework.wire import Wire
+from framework.circuit import Circuit
 
 """
 This will eventually be what does the simulation and compilation of the circuits. This

@@ -1,4 +1,4 @@
-from cell import Cell
+from framework.cell import Cell
 
 """
 Connections between cells in the circuit. These are edges in the graph

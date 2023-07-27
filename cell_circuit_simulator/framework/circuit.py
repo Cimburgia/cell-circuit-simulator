@@ -1,7 +1,6 @@
-from cell import Cell
-from sender import Sender
-from receiver import Receiver
-from wire import Wire
+from framework.sender import Sender
+from framework.receiver import Receiver
+from framework.wire import Wire
 
 """
 

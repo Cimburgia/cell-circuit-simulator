@@ -1,4 +1,4 @@
-import sim   # The code to test
+import simulator.sim as sim   # The code to test
 import pytest
 
 #What you're testing and a decription of what you expect to happen
